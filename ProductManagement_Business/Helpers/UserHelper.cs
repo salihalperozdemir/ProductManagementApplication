@@ -1,4 +1,6 @@
-﻿using ProductManagement_Business.Enum;
+﻿using ProductManagement.DAL.Interfaces;
+using ProductManagement.DAL.Repositories;
+using ProductManagement_Business.Enum;
 using ProductManagement_DAL.Data;
 using ProductManagement_DAL.Models;
 using System;
@@ -12,22 +14,20 @@ namespace ProductManagement_Business.Helpers
     public class UserHelper
     {
         private ApplicationDbContext _dbContext = new ApplicationDbContext();
-
+        private UserRepository _userRepository;
+        public UserHelper()
+        {
+            _userRepository = new UserRepository();
+        }
         public async Task<User> CreateUser(User signupViewModel)
         {
             try
             {
                 if(signupViewModel != null)
                 {
-                    var obj = _dbContext.Add<User>(signupViewModel);
-                    await _dbContext.SaveChangesAsync();
-
-                    var userRoleModel = new UserRole { CompanyId = 0, User = signupViewModel, RoleId = (int)RoleTypes.Customer };
-                    var userRole = _dbContext.Add<UserRole>(userRoleModel);
-
-                    await _dbContext.SaveChangesAsync();
-                    return obj.Entity;
+                    _userRepository.Add(signupViewModel);
                 }
+               
                 return null;
             }
             catch (Exception ex)

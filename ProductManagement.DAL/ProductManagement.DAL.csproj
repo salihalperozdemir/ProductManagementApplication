@@ -7,13 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Models\**" />
-    <EmbeddedResource Remove="Models\**" />
-    <None Remove="Models\**" />
+    <PackageReference Include="EntityFramework" Version="6.4.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProductManagement.DAL\ProductManagement.DAL.csproj" />
+    <ProjectReference Include="..\ProductManagement.Entities\ProductManagement.Entities.csproj" />
   </ItemGroup>
 
 </Project>
