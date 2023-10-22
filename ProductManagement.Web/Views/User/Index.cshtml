@@ -1,0 +1,54 @@
+﻿@using ProductManagement_DAL.Models;
+
+
+@model List<AppUser>
+@{
+    Layout = "_Layout";
+}
+<head>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bulma.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.1/css/bulma.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bulma.min.css"/>
+</head>
+<div class="page-content">
+    <table id="example" class="table is-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Company Name</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(Model.Count > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.FirstName</td>
+                        <td>@item.LastName</td>
+                        <td>@item.Email</td>
+                        <td>A</td>
+                        <td><a class="btn btn-primary" href="@Url.Action("Detail", new { userId = item.Id })">Edit</a>
+                        <button class="btn btn-danger">Delete</button></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+    {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bulma.min.js"></script>
+        
+    <script>
+        $(document).ready(function () {
+            $('#example').DataTable();
+        });
+    </script>
+}

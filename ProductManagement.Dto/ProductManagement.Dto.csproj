@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductManagement.Core\ProductManagement.Core.csproj" />
+    <ProjectReference Include="..\ProductManagement.DAL\ProductManagement.DAL.csproj" />
+    <ProjectReference Include="..\ProductManagement.Entities\ProductManagement.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

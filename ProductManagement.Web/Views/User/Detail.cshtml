@@ -1,0 +1,99 @@
+﻿@using ProductManagement.DAL.Dto;
+
+@model UserViewModelDto;
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    .row{
+        margin:auto;
+    }
+    .container{
+        border: solid 1pt lightgray;
+        border-radius: 10px;
+    }
+</style>
+<form>
+    @if(Model != null)
+    {
+        <div class="container" style="margin-top:160px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="fname">First name:</label>
+                    <input class="form-control" type="text" id="fname" name="fname" value="@Model.FirstName">
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Last name:</label>
+                    <input class="form-control" type="text" id="lname" name="lname" value="@Model.LastName">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                <label for="lname">Email</label>
+                <input class="form-control" type="text" id="lname" name="lname" value="@Model.Email">
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Password:</label>
+                    <input class="form-control" type="password" id="lname" name="lname" value="@Model.Password">
+                </div>
+            </div>  
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lname">Roles:</label>
+                    <select class="form-control">
+                        <option selected="@(Model.RoleId == 1)" value="1">
+                            Administrator
+                        </option>
+                        <option selected="@(Model.RoleId == 2)" value="2">
+                            Customer
+                        </option>
+                        <option selected="@(Model.RoleId == 3)" value="3">
+                            Seller
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Company:</label>
+                    <select class="form-control">
+                        <option selected="@(Model.RoleId == 1)" value="1">
+                            All
+                        </option>
+                        <option selected="@(Model.RoleId == 2)" value="2">
+                            A
+                        </option>
+                        <option selected="@(Model.RoleId == 3)" value="3">
+                            B
+                        </option>
+                    </select>
+                </div>
+                
+            </div>
+            <br/>
+            <div class="row">
+                
+                <button id="btnEditUser" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+        
+        
+        
+    }
+    else
+    {
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname">
+
+        <br>
+
+        <br>
+        <label for="lname">Last name:</label>
+        <input type="text" id="lname" name="lname">
+
+        <br>
+
+        <br>
+        <input type="submit" value="Submit">
+    }
+
+</form>

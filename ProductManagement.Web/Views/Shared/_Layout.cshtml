@@ -1,0 +1,214 @@
+﻿@using Newtonsoft.Json;
+@using ProductManagement.Business.Models.ResponseModels;
+
+@{
+    Layout = null;
+    var user = Context.Session.GetString("User");
+    var userModel = JsonConvert.DeserializeObject<LoginResponseModel>(user);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProductManagement.Web</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ProductManagement.Web.styles.css" asp-append-version="true" />
+    <style>
+        .layout{
+            min-height:87vh;
+        }
+    </style>
+</head>
+<body>
+        @* <div class="sidebar">
+            <div class="layout d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <strong style="margin-left:10px;">@userModel.FirstName @userModel.LastName</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                        <li><a class="dropdown-item" href="@Url.Action("Profile/Index")">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="@Url.Action("Login/Index")">Sign out</a></li>
+                    </ul>
+                </div>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                            Home
+                        </a>
+                    </li>
+                    @if (!userModel.Roles.Contains("Administrator"))
+                    {
+                        if (userModel.Roles.Contains("Customer"))
+                        {
+                            <li>
+                                <a href="#" class="nav-link text-white">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                    Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/User/Index" class="nav-link text-white">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                    Customers
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#" class="nav-link text-white">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                    Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link text-white">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                                    Products
+                                </a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li>
+
+                            <a href="#" class="nav-link text-white">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                Orders
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                                Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link text-white">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                Customers
+                            </a>
+                        </li>
+                    }
+                </ul>
+                <hr>
+
+            </div>
+        </div> *@
+        <div class="sidebar">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto" style="color:black !important">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">
+                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+                            Home
+                        </a>
+                    </li>
+                    @if (!userModel.Roles.Contains("Administrator"))
+                    {
+                        if (userModel.Roles.Contains("Customer"))
+                        {
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                    Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="/User/Index" class="nav-link">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                    Customers
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                    Orders
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="nav-link">
+                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                                    Products
+                                </a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        <li>
+
+                            <a href="#" class="nav-link">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                                Dashboard
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
+                                Orders
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
+                                Products
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="nav-link">
+                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
+                                Customers
+                            </a>
+                        </li>
+                    }
+                    <li class="nav-item" style="float:right; margin:auto">
+                        <div class="dropdown">
+                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <strong style="margin-left:10px;">@userModel.FirstName @userModel.LastName</strong>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="@Url.Action("Profile/Index")">Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="@Url.Action("Login/Index")">Sign out</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </nav>
+        </div>
+    
+    <div class="main-content">
+        @RenderBody();
+    </div>
+           
+  
+ 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
