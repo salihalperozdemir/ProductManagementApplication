@@ -119,7 +119,7 @@
                             Home
                         </a>
                     </li>
-                    @if (!userModel.Roles.Contains("Administrator"))
+                    @if (!userModel.Roles.Contains("Manager"))
                     {
                         if (userModel.Roles.Contains("Customer"))
                         {

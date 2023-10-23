@@ -1,0 +1,156 @@
+﻿@using ProductManagement.Core.Model;
+
+@model List<KeyValue>;
+@{
+    Layout = "_Layout";
+}
+
+<style>
+    .row {
+        margin: auto;
+    }
+
+    .container {
+        border: solid 1pt lightgray;
+        border-radius: 10px;
+    }
+</style>
+<body>
+    <form>
+        <div class="container" style="margin-top:160px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="fname">First name:</label>
+                    <input class="form-control" type="text" id="fname" name="fname">
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Last name:</label>
+                    <input class="form-control" type="text" id="lname" name="lname">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lname">Email</label>
+                    <input class="form-control" type="text" id="email" name="lname">
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Password:</label>
+                    <input class="form-control" type="password" id="password" name="lname">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <label for="lname">Roles:</label>
+                    <select id="roleSelect" class="form-control">
+                        <option value="1">
+                            Customer
+                        </option>
+                        <option value="2">
+                            Manager
+                        </option>
+                        <option value="3">
+                            Seller
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="lname">Company:</label>
+                    <select id="companySelect" class="form-control">
+                        @for (int i = 0; i < Model.Count(); i++)
+                        {
+                            if (i == 0)
+                            {
+                                <option selected value="@(Model[i].Key)">
+                                    @Model[i].Value
+                                </option>
+                            }
+                            else
+                            {
+                                <option value="@(Model[i].Key)">
+                                    @Model[i].Value
+                                </option>
+                            }
+                        }
+                    </select>
+                </div>
+
+            </div>
+            <br />
+            <div class="row">
+                <span style="color:red" id="responseMsgSignup"></span><br />
+                <button id="btnCreateUser" class="btn btn-success">Submit</button>
+            </div>
+        </div>
+    </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+    <script>
+        $('body').on('click', '#btnCreateUser', function (e) {
+            e.preventDefault();
+            var signupViewModel = {
+                firstName: $('#fname').val(),
+                lastName: $('#lname').val(),
+                email: $('#email').val(),
+                password: $('#password').val(),
+                roleId: $('#roleSelect').val(),
+                companyId: $('#companySelect').val()
+            };
+
+            if (checkValidation(signupViewModel)) {
+                $.ajax({
+                    type: "POST",
+                    url: "/User/Create",
+                    data: signupViewModel,
+                    success: function (response) {
+                        debugger;
+                        // Display the response
+                        if (response.isOk) {
+                            window.location.href = response.returnUrl;
+                        } else {
+                        }
+
+                    },
+                    error: function (e) {
+                    }
+                });
+
+            }
+        });
+        function checkValidation(model) {
+            if (model.firstName == '' || model.lastName == '' || model.email == '' || model.password == '' || model.confirmPassword == '') {
+
+                $('#responseMsgSignup').text('Please fill all the fields');
+                return false;
+            }
+            if (!isValidEmail(model.email)) {
+                $('#responseMsgSignup').text('Please check email format');
+                return false;
+            }
+            if (model.password.length < 6) {
+                $('#responseMsgSignup').text('Passwords must be at least 6 characters.');
+
+                return false;
+            }
+            if (!/[!@@#$%^&*()_+{}\[\]:;<>,.?~\\-]/.test(model.password)) {
+                $('#responseMsgSignup').text('Passwords must have at least one non alphanumeric character.');
+
+                return false;
+            }
+            if (!/[a-z]/.test(model.password)) {
+                $('#responseMsgSignup').text("Passwords must have at least one lowercase ('a'-'z').");
+                return false;
+            }
+            if (!/[A-Z]/.test(model.password)) {
+                $('#responseMsgSignup').text("Passwords must have at least one uppercase ('A'-'Z').");
+                return false;
+            }
+            return true;
+        }
+        function isValidEmail(email) {
+            // Regular expression pattern for a valid email address
+            var emailPattern = /^[A-Za-z0-9._%+-]+@@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+            return emailPattern.test(email);
+        }
+    </script>
+</body>
+

@@ -38,7 +38,7 @@ namespace ProductManagement.Web.Controllers
         {
             try
             {
-				var userResponse = await _userServices.SignUp(model);
+				var userResponse = await _userServices.CreateUser(model);
 				return Ok(userResponse);
 			}
             catch (Exception ex)
@@ -50,19 +50,27 @@ namespace ProductManagement.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] LoginModel model)
         {
-			var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
-            if (result.Succeeded)
+            try
             {
-                var user = await _userServices.GetUserByEmail(model.Email);
-                HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
-                var tokenResponse = _authHelper.CreateToken(user);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
+                if (result.Succeeded)
+                {
+                    var user = await _userServices.GetUserByEmail(model.Email);
+                    HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+                    var tokenResponse = _authHelper.CreateToken(user);
 
-                return Ok(new LoginResponseModel { IsOk = true, Message = "Login is successfull", ReturnUrl = "/Home/Index", Token= tokenResponse.Token});
+                    return Ok(new LoginResponseModel { IsOk = true, Message = "Login is successfull", ReturnUrl = "/Home/Index", Token = tokenResponse.Token });
+                }
+                else
+                {
+                    return Ok(new LoginResponseModel { IsOk = false, Message = "Login is unsuccessfull" });
+                }
             }
-            else
+            catch (Exception ex)
             {
                 return Ok(new LoginResponseModel { IsOk = false, Message = "Login is unsuccessfull" });
             }
+			
 
 		}
 

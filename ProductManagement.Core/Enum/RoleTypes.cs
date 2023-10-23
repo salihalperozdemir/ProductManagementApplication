@@ -8,8 +8,8 @@ namespace ProductManagement_Business.Enum
 {
     public enum RoleTypes
     {
-        Administrator = 1,
-        Customer = 2,
+        Manager = 2,
+        Customer = 1,
         Seller = 3
     }
 }

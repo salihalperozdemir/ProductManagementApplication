@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ProductManagement_DAL.Models;
+using ProductManagement.Dto.Interfaces;
+using ProductManagement.Dto.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +36,7 @@ builder.Services.AddAuthentication(auth =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Administrator"));
+    options.AddPolicy("ManagerPolicy", policy => policy.RequireRole("Manager"));
     options.AddPolicy("SellerPolicy", policy => policy.RequireRole("Seller"));
 });
 // Add services to the container.
@@ -42,8 +44,14 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<CompanyService>();
 builder.Services.AddSession();
 var app = builder.Build();
 
