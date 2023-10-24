@@ -52,6 +52,9 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<CompanyService>();
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddSession();
 var app = builder.Build();
 

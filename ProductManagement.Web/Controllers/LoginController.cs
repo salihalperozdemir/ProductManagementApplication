@@ -43,7 +43,7 @@ namespace ProductManagement.Web.Controllers
 			}
             catch (Exception ex)
             {
-				return Ok(new SignupResponseModel { IsOk = false, Message = ex.Message });
+				return Ok(new SignupResponse { IsOk = false, Message = ex.Message });
             }
         }
 
@@ -59,16 +59,16 @@ namespace ProductManagement.Web.Controllers
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
                     var tokenResponse = _authHelper.CreateToken(user);
 
-                    return Ok(new LoginResponseModel { IsOk = true, Message = "Login is successfull", ReturnUrl = "/Home/Index", Token = tokenResponse.Token });
+                    return Ok(new LoginResponse { IsOk = true, Message = "Login is successfull", ReturnUrl = "/Home/Index", Token = tokenResponse.Token });
                 }
                 else
                 {
-                    return Ok(new LoginResponseModel { IsOk = false, Message = "Login is unsuccessfull" });
+                    return Ok(new LoginResponse { IsOk = false, Message = "Login is unsuccessfull" });
                 }
             }
             catch (Exception ex)
             {
-                return Ok(new LoginResponseModel { IsOk = false, Message = "Login is unsuccessfull" });
+                return Ok(new LoginResponse { IsOk = false, Message = "Login is unsuccessfull" });
             }
 			
 

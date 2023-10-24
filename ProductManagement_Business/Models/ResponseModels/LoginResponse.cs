@@ -4,9 +4,9 @@ using System.ComponentModel;
 
 namespace ProductManagement.Business.Models.ResponseModels
 {
-	public class LoginResponseModel : BaseResponse
+	public class LoginResponse : BaseResponse
 	{
-        public LoginResponseModel()
+        public LoginResponse()
         {
         }
         public int UserId { get; set; }

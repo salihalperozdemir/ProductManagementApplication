@@ -4,7 +4,7 @@
 @{
     Layout = null;
     var user = Context.Session.GetString("User");
-    var userModel = JsonConvert.DeserializeObject<LoginResponseModel>(user);
+    var userModel = JsonConvert.DeserializeObject<LoginResponse>(user);
 }
 
 <!DOCTYPE html>

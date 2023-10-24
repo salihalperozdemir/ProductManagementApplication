@@ -8,6 +8,7 @@ namespace ProductManagement_DAL.Models
         public int OrderId { get; set; }
         public string OrderNumber { get; set; }
         public decimal Price { get; set; }
-        public int UserId { get; set; }
+        public int CustomerId { get; set; }
+        public AppUser User { get; set; }
     }
 }

@@ -11,7 +11,9 @@ namespace ProductManagement_DAL.Models
         public string Price { get; set; }
         public string ImageUrl { get; set; }
         public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public int CompanyId { get; set; }
+        public Company Company { get; set; }
         public List<OrderProduct> OrderProducts { get; set; }
     }
 }

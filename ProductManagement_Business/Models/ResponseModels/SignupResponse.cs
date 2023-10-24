@@ -2,7 +2,7 @@
 
 namespace ProductManagement.Business.Models.ResponseModels
 {
-	public class SignupResponseModel : BaseResponse
+	public class SignupResponse : BaseResponse
 	{
         public string Email { get; set; }
         public string Password { get; set; }

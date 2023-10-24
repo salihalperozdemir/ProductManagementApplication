@@ -6,7 +6,7 @@ namespace ProductManagement.Web.Helpers
 {
     public class AuthHelper
 	{
-		public TokenResponse CreateToken(LoginResponseModel model)
+		public TokenResponse CreateToken(LoginResponse model)
 		{
 			var tokenResponse = new TokenResponse();
 			var claims = new List<Claim>();

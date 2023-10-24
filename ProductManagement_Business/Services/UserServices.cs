@@ -23,9 +23,9 @@ namespace ProductManagement.Business.Services
             _userRoleManager = userRoleManager;
         }
 
-        public async Task<SignupResponseModel> CreateUser(UserViewModelDto model)
+        public async Task<SignupResponse> CreateUser(UserViewModelDto model)
         {
-            var response = new SignupResponseModel();
+            var response = new SignupResponse();
             try
             {
 
@@ -95,10 +95,10 @@ namespace ProductManagement.Business.Services
             }
         }
 
-        public async Task<LoginResponseModel> GetUserByEmail(string email)
+        public async Task<LoginResponse> GetUserByEmail(string email)
         {
             var user = _userRepository.GetAll().Where(x => x.Email == email).FirstOrDefault();
-            var response = new LoginResponseModel();
+            var response = new LoginResponse();
 
             if (user != null)
             {
