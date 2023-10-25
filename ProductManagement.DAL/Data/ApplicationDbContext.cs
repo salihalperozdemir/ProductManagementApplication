@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ProductManagement_DAL.Models;
+using Microsoft.Extensions.Options;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement_DAL.Data
 {
@@ -10,6 +11,7 @@ namespace ProductManagement_DAL.Data
         {
 			optionsBuilder.EnableSensitiveDataLogging();
 			optionsBuilder.UseSqlServer("Server=.;Database=ProductManagement;Integrated Security=True;MultipleActiveResultSets=True;TrustServerCertificate=True;");
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }

@@ -24,7 +24,7 @@ namespace ProductManagement_DAL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Category", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -43,7 +43,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Company", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Company", b =>
                 {
                     b.Property<int>("CompanyId")
                         .ValueGeneratedOnAdd()
@@ -62,7 +62,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Company");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Order", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -84,7 +84,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.OrderProduct", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.OrderProduct", b =>
                 {
                     b.Property<int>("OrderProductId")
                         .ValueGeneratedOnAdd()
@@ -115,7 +115,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -150,7 +150,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Role", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -169,7 +169,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.User", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -197,7 +197,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.UserRole", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.UserRole", b =>
                 {
                     b.Property<int>("UserRoleId")
                         .ValueGeneratedOnAdd()
@@ -228,21 +228,21 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("UserRoles");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.OrderProduct", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.OrderProduct", b =>
                 {
-                    b.HasOne("ProductManagement_DAL.Models.Company", null)
+                    b.HasOne("ProductManagement.Entities.Models.Company", null)
                         .WithMany("OrderProducts")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.Order", "Order")
+                    b.HasOne("ProductManagement.Entities.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.Product", "Product")
+                    b.HasOne("ProductManagement.Entities.Models.Product", "Product")
                         .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -253,36 +253,36 @@ namespace ProductManagement_DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
-                    b.HasOne("ProductManagement_DAL.Models.Category", null)
+                    b.HasOne("ProductManagement.Entities.Models.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.Company", null)
+                    b.HasOne("ProductManagement.Entities.Models.Company", null)
                         .WithMany("Products")
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.UserRole", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.UserRole", b =>
                 {
-                    b.HasOne("ProductManagement_DAL.Models.Company", "Company")
+                    b.HasOne("ProductManagement.Entities.Models.Company", "Company")
                         .WithMany()
                         .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.Role", "Role")
+                    b.HasOne("ProductManagement.Entities.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.User", "User")
+                    b.HasOne("ProductManagement.Entities.Models.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -295,29 +295,29 @@ namespace ProductManagement_DAL.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Category", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Company", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Company", b =>
                 {
                     b.Navigation("OrderProducts");
 
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
                     b.Navigation("OrderProducts");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Role", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Role", b =>
                 {
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.User", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.User", b =>
                 {
                     b.Navigation("UserRoles");
                 });

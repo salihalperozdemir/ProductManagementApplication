@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProductManagement_DAL.Models
+namespace ProductManagement.Entities.Models
 {
     public class Company
     {
@@ -8,7 +8,5 @@ namespace ProductManagement_DAL.Models
         public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public bool Valid { get; set; }
-        public List<Product> Products { get; set; }
-        public List<OrderProduct> OrderProducts { get; set; }
     }
 }

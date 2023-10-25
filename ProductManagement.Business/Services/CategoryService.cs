@@ -2,7 +2,7 @@
 using ProductManagement.Core.Model;
 using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +54,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
-        public CategoryResponse AddCategory(CategoryDto category)
+        public CategoryResponse AddCategory(Category category)
         {
             var response = new CategoryResponse { IsOk = true };
             try
@@ -81,7 +81,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
-        public CategoryResponse UpdateCategory(CategoryDto category)
+        public CategoryResponse UpdateCategory(Category category)
         {
             var response = new CategoryResponse { IsOk = true };
             if (category.CategoryId == 0)

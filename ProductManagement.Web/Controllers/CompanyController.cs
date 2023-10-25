@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
 using ProductManagement.Dto.Dto;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
@@ -14,7 +15,8 @@ namespace ProductManagement.Web.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            return View();
+            var companies = _companyService.GetCompanies();
+            return View(companies);
         }
         public async Task<IActionResult> New()
         {
@@ -30,7 +32,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetCompany(int companyId)
+        public async Task<ActionResult> Get(int companyId)
         {
             try
             {
@@ -58,7 +60,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateCompany(CompanyDto company)
+        public async Task<ActionResult> Create(Company company)
         {
             try
             {
@@ -71,7 +73,7 @@ namespace ProductManagement.Web.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> UpdateCompany(CompanyDto company)
+        public async Task<ActionResult> Update(Company company)
         {
             try
             {
@@ -84,8 +86,8 @@ namespace ProductManagement.Web.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<ActionResult> DeleteCompany(int companyId)
+        [HttpGet]
+        public async Task<ActionResult> Delete(int companyId)
         {
             try
             {

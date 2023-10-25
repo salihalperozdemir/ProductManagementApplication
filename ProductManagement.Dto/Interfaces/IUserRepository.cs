@@ -1,4 +1,4 @@
-﻿using ProductManagement_DAL.Models;
+﻿using ProductManagement.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

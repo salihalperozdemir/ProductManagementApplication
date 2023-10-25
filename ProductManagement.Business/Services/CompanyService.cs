@@ -4,7 +4,7 @@ using ProductManagement.Core.Response;
 using ProductManagement.DAL.Repositories;
 using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +56,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }      
         }
-        public CompanyResponse AddCompany(CompanyDto company)
+        public CompanyResponse AddCompany(Company company)
         {
             var response = new CompanyResponse { IsOk = true };
             try
@@ -83,7 +83,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
-        public CompanyResponse UpdateCompany(CompanyDto company)
+        public CompanyResponse UpdateCompany(Company company)
         {
             var response = new CompanyResponse { IsOk = true };
             if(company.CompanyId == 0)

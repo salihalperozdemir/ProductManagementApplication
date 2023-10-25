@@ -1,7 +1,7 @@
 ﻿using ProductManagement.DAL.Interfaces;
 
 using ProductManagement_DAL.Data;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using System.Linq.Expressions;
 
 namespace ProductManagement.DAL.Repositories

@@ -223,7 +223,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Category", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Category", b =>
                 {
                     b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
@@ -242,7 +242,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Order", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Order", b =>
                 {
                     b.Property<int>("OrderId")
                         .ValueGeneratedOnAdd()
@@ -264,7 +264,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.OrderProduct", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.OrderProduct", b =>
                 {
                     b.Property<int>("OrderProductId")
                         .ValueGeneratedOnAdd()
@@ -293,7 +293,7 @@ namespace ProductManagement_DAL.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
                     b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
@@ -377,15 +377,15 @@ namespace ProductManagement_DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.OrderProduct", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.OrderProduct", b =>
                 {
-                    b.HasOne("ProductManagement_DAL.Models.Order", "Order")
+                    b.HasOne("ProductManagement.Entities.Models.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProductManagement_DAL.Models.Product", "Product")
+                    b.HasOne("ProductManagement.Entities.Models.Product", "Product")
                         .WithMany("OrderProducts")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -396,21 +396,21 @@ namespace ProductManagement_DAL.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
-                    b.HasOne("ProductManagement_DAL.Models.Category", null)
+                    b.HasOne("ProductManagement.Entities.Models.Category", null)
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Category", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("ProductManagement_DAL.Models.Product", b =>
+            modelBuilder.Entity("ProductManagement.Entities.Models.Product", b =>
                 {
                     b.Navigation("OrderProducts");
                 });

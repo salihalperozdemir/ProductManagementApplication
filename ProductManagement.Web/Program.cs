@@ -1,4 +1,4 @@
-using ProductManagement.Business.Services;
+
 using ProductManagement.DAL.Interfaces;
 using ProductManagement.DAL.Repositories;
 using ProductManagement_DAL.Data;
@@ -7,32 +7,38 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement.Dto.Repositories;
+using ProductManagement.Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 
-builder.Services.AddAuthentication(auth =>
+builder.Services.AddAuthentication(options =>
 {
-	auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-	auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 })
 .AddJwtBearer(options =>
 {
-	options.SaveToken = true;
-	options.TokenValidationParameters = new TokenValidationParameters
-	{
-		ValidateIssuer = true,
-		ValidIssuer = "https://localhost:44351/",
-		ValidateAudience = true,
-		ValidAudience = "https://localhost:44351/",
-		ValidateIssuerSigningKey = true,
-		IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("11111@11111"))
-	};
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+    };
 });
+
+
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CustomerPolicy", policy => policy.RequireRole("Customer"));
@@ -65,6 +71,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProductManagement_Business.Enum
+namespace ProductManagement.Business.Enum
 {
     public enum RoleTypes
     {

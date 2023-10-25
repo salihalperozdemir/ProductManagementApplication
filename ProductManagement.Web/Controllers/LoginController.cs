@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ProductManagement.Business.Models;
 using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
+using ProductManagement.DAL.Dto;
+using ProductManagement.Entities.Models;
 using ProductManagement.Web.Helpers;
 using ProductManagement.Web.Models;
-using ProductManagement_DAL.Models;
-using System.Text.Json.Serialization;
 
 namespace ProductManagement.Web.Controllers
 {
@@ -20,13 +19,15 @@ namespace ProductManagement.Web.Controllers
         private AuthHelper _authHelper = new AuthHelper();
 		private readonly SignInManager<AppUser> _signInManager;
 		private readonly UserManager<AppUser> _userManager;
-        public LoginController(UserServices userServices, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        private IConfiguration _configuration;
+        public LoginController(UserServices userServices, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
         {
             _userServices = userServices;
 			_signInManager = signInManager;
 			_userManager = userManager;
+            _configuration = configuration;
 
-		}
+        }
         public async Task<IActionResult> Index()
         {
             await _signInManager.SignOutAsync();
@@ -34,7 +35,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Signup(SignupViewModel model)
+        public async Task<ActionResult> Signup(UserViewModelDto model)
         {
             try
             {
@@ -48,7 +49,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Login([FromBody] LoginModel model)
+        public async Task<ActionResult> Login([FromBody] LoginViewModelDto model)
         {
             try
             {
@@ -57,7 +58,8 @@ namespace ProductManagement.Web.Controllers
                 {
                     var user = await _userServices.GetUserByEmail(model.Email);
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
-                    var tokenResponse = _authHelper.CreateToken(user);
+                    var tokenResponse = _authHelper.CreateToken(user, _configuration);
+                    HttpContext.Session.SetString("Token", tokenResponse.Token);
 
                     return Ok(new LoginResponse { IsOk = true, Message = "Login is successfull", ReturnUrl = "/Home/Index", Token = tokenResponse.Token });
                 }

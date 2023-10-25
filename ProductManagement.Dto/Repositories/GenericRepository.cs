@@ -59,8 +59,7 @@ namespace ProductManagement.DAL.Repositories
 
         public T Update(T entity)
         {
-            _dbSet.Attach(entity);
-            _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbSet.Update(entity);
 			_dbContext.SaveChanges();
 			return entity;
 		}

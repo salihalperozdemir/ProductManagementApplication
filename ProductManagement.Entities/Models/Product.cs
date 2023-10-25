@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace ProductManagement_DAL.Models
+namespace ProductManagement.Entities.Models
 {
     public class Product
     {

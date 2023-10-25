@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.23" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.Core" Version="5.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ProductManagement.Core\ProductManagement.Core.csproj" />
+    <ProjectReference Include="..\ProductManagement.DAL\ProductManagement.DAL.csproj" />
+    <ProjectReference Include="..\ProductManagement.Dto\ProductManagement.Dto.csproj" />
+    <ProjectReference Include="..\ProductManagement.Entities\ProductManagement.Entities.csproj" />
+    <ProjectReference Include="..\ProductManagement.Business\ProductManagement.Business.csproj" />
+  </ItemGroup>
+
+</Project>

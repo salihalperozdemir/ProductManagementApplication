@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace ProductManagement_DAL.Models
+namespace ProductManagement.Entities.Models
 {
 	public class AppRole : IdentityRole<int>
     {

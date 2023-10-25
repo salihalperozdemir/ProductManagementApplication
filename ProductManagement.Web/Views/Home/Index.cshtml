@@ -3,3 +3,112 @@
 }
 
 
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Chart.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        /* Özel CSS stilleri */
+        .card {
+            background-color: #f8f9fa; /* Kartların arka plan rengi */
+        }
+
+        .card-title {
+            color: #007BFF; /* Kart başlıklarının yazı rengi */
+        }
+
+        .card-text {
+            font-size: 18px; /* Kart metin boyutu */
+        }
+    </style>
+</head>
+<body>
+    <div class="">
+        <div class="row">
+            <!-- Üst taraftaki kartlar -->
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Satış Rakamları</h5>
+                        <p class="card-text">Bugün: 100</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Ülke</h5>
+                        <p class="card-text">Türkiye</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Başlık 3</h5>
+                        <p class="card-text">Veri 3</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Başlık 4</h5>
+                        <p class="card-text">Veri 4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alt taraftaki grafikler -->
+        <div class="row">
+            <div class="col-md-6">
+                <canvas id="lineChart" width="400" height="200"></canvas>
+            </div>
+            <div class="col-md-6">
+                <canvas id="barChart" width="400" height="200"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Rastgele çizgi grafik verileri oluştur
+        var lineData = {
+            labels: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs"],
+            datasets: [{
+                label: "Satış Miktarı",
+                data: [150, 200, 180, 220, 250],
+                borderColor: 'blue',
+                fill: false
+            }]
+        };
+
+        var lineChart = new Chart(document.getElementById('lineChart'), {
+            type: 'line',
+            data: lineData
+        });
+
+        // Rastgele sütun grafik verileri oluştur
+        var barData = {
+            labels: ["Şirket 1", "Şirket 2", "Şirket 3", "Şirket 4"],
+            datasets: [{
+                label: "Ürün Sayısı",
+                data: [12, 8, 15, 10],
+                backgroundColor: 'orange'
+            }]
+        };
+
+        var barChart = new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: barData
+        });
+    </script>
+
+</body>
+</html>
+

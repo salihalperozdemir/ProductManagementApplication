@@ -1,5 +1,5 @@
 ﻿using ProductManagement.DAL.Interfaces;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 //using ProductManagement.DAL.Data;
 using System.Linq.Expressions;
 using ProductManagement_DAL.Data;

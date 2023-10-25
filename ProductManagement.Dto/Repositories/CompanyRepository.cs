@@ -1,7 +1,7 @@
 ﻿using ProductManagement.DAL.Repositories;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement_DAL.Data;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Dto.Repositories
 {

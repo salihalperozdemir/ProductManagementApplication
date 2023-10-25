@@ -2,213 +2,261 @@
 @using ProductManagement.Business.Models.ResponseModels;
 
 @{
-    Layout = null;
-    var user = Context.Session.GetString("User");
-    var userModel = JsonConvert.DeserializeObject<LoginResponse>(user);
+	Layout = null;
+	var user = Context.Session.GetString("User");
+	var userModel = JsonConvert.DeserializeObject<LoginResponse>(user);
 }
-
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ProductManagement.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/ProductManagement.Web.styles.css" asp-append-version="true" />
-    <style>
-        .layout{
-            min-height:87vh;
-        }
-    </style>
+	<link href="~/css/site.css" rel="stylesheet" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - ProductManagement.Web</title>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/ProductManagement.Web.styles.css" asp-append-version="true" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+    <title>Sidebar template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+	<style>
+		.layout {
+			min-height: 87vh;
+		}
+	</style>
 </head>
 <body>
-        @* <div class="sidebar">
-            <div class="layout d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 280px;">
-                <div class="dropdown">
-                    <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <strong style="margin-left:10px;">@userModel.FirstName @userModel.LastName</strong>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                        <li><a class="dropdown-item" href="@Url.Action("Profile/Index")">Profile</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="@Url.Action("Login/Index")">Sign out</a></li>
-                    </ul>
+	<!--Main Navigation-->
+    <body>
+        <div class="page-wrapper chiller-theme toggled" >
+            <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
+                <i class="fas fa-bars"></i>
+            </a>
+            <nav id="sidebar" class="sidebar-wrapper" style="border-radius: 25px;margin-left: -6px;">
+                <div class="sidebar-content">
+                    <div class="sidebar-header">
+
+                    </div>
+                    <!-- sidebar-header  -->
+                    <div class="sidebar-search" style="display: flex;justify-content: space-around;font-size: 26px;">
+                        <h3 style="maring-right:6px;">Web Application </h3>
+                    </div>
+                    <!-- sidebar-search  -->
+                    <div class="sidebar-menu">
+                        <ul>
+                            <li class="header-menu">
+                                <span>General</span>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-tachometer-alt"></i>
+                                    <span>Dashboard</span>
+                                    <span class="badge badge-pill badge-warning">New</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                Dashboard 1
+                                                <span class="badge badge-pill badge-success">Pro</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Dashboard 2</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Dashboard 3</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-shopping-cart"></i>
+                                    <span>E-commerce</span>
+                                    <span class="badge badge-pill badge-danger">3</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">
+                                                Products
+
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Orders</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Credit cart</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="far fa-gem"></i>
+                                    <span>Components</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="/User/Index">General</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Panels</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Tables</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Icons</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Forms</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-chart-line"></i>
+                                    <span>Charts</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">Pie chart</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Line chart</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Bar chart</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Histogram</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="fa fa-globe"></i>
+                                    <span>Maps</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">Google maps</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Open street map</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="header-menu">
+                                <span>Extra</span>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-book"></i>
+                                    <span>Documentation</span>
+                                    <span class="badge badge-pill badge-primary">Beta</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-calendar"></i>
+                                    <span>Calendar</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="fa fa-folder"></i>
+                                    <span>Examples</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- sidebar-menu  -->
                 </div>
-                <hr>
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                            Home
-                        </a>
-                    </li>
-                    @if (!userModel.Roles.Contains("Administrator"))
-                    {
-                        if (userModel.Roles.Contains("Customer"))
-                        {
-                            <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                    Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/User/Index" class="nav-link text-white">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                    Customers
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                    Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link text-white">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                    Products
-                                </a>
-                            </li>
-                        }
-                    }
-                    else
-                    {
-                        <li>
+                <!-- sidebar-content  -->
+            </nav>
+            <!-- sidebar-wrapper  -->
+            <main class="page-content">
 
-                            <a href="#" class="nav-link text-white">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                Products
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link text-white">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                Customers
-                            </a>
-                        </li>
-                    }
-                </ul>
-                <hr>
-
-            </div>
-        </div> *@
-        <div class="sidebar">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto" style="color:black !important">
-                    <li class="nav-item">
-                        <a href="#" class="nav-link active" aria-current="page">
-                            <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                            Home
-                        </a>
-                    </li>
-                    @if (!userModel.Roles.Contains("Manager"))
-                    {
-                        if (userModel.Roles.Contains("Customer"))
-                        {
-                            <li>
-                                <a href="#" class="nav-link">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                    Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="/User/Index" class="nav-link">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                    Customers
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li>
-                                <a href="#" class="nav-link">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                    Orders
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="nav-link">
-                                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                    Products
-                                </a>
-                            </li>
-                        }
-                    }
-                    else
-                    {
-                        <li>
-
-                            <a href="#" class="nav-link">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                Products
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                Customers
-                            </a>
-                        </li>
-                    }
-                    <li class="nav-item" style="float:right; margin:auto">
-                        <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                                <strong style="margin-left:10px;">@userModel.FirstName @userModel.LastName</strong>
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
-                                <li><a class="dropdown-item" href="@Url.Action("Profile/Index")">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="@Url.Action("Login/Index")">Sign out</a></li>
-                            </ul>
-                        </div>
-                    </li>
-
-                </ul>
-
-            </div>
-        </nav>
+               
+                    @RenderBody()
+            
+            </main>
+            <!-- page-content" -->
         </div>
-    
-    <div class="main-content">
-        @RenderBody();
-    </div>
-           
-  
- 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+        <!-- page-wrapper -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+
+    </body>
+	<!--Main Navigation-->
+	<!--Main layout-->
+	<!--Main layout-->
+
+
+
+
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+	<script>
+		jQuery(function ($) {
+
+			$(".sidebar-dropdown > a").click(function () {
+				$(".sidebar-submenu").slideUp(200);
+				if (
+					$(this)
+						.parent()
+						.hasClass("active")
+				) {
+					$(".sidebar-dropdown").removeClass("active");
+					$(this)
+						.parent()
+						.removeClass("active");
+				} else {
+					$(".sidebar-dropdown").removeClass("active");
+					$(this)
+						.next(".sidebar-submenu")
+						.slideDown(200);
+					$(this)
+						.parent()
+						.addClass("active");
+				}
+			});
+
+			$("#close-sidebar").click(function () {
+				$(".page-wrapper").removeClass("toggled");
+			});
+			$("#show-sidebar").click(function () {
+				$(".page-wrapper").addClass("toggled");
+			});
+
+
+
+
+		});</script>
 </body>
 </html>
 

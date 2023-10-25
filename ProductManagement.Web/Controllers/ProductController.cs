@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
-using ProductManagement.Dto.Dto;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
@@ -57,7 +57,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(ProductDto product)
+        public async Task<ActionResult> CreateProduct(Product product)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace ProductManagement.Web.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> UpdateProduct(ProductDto product)
+        public async Task<ActionResult> UpdateProduct(Product product)
         {
             try
             {

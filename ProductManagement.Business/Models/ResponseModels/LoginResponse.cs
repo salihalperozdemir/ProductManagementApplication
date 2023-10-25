@@ -1,5 +1,5 @@
 ﻿using ProductManagement.Core.Response;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using System.ComponentModel;
 
 namespace ProductManagement.Business.Models.ResponseModels

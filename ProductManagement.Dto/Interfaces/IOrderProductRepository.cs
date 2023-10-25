@@ -1,5 +1,5 @@
 ﻿using ProductManagement.DAL.Interfaces;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Dto.Interfaces
 {

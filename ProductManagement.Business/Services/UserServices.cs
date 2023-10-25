@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ProductManagement.Business.Enum;
 using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Core.Response;
 using ProductManagement.DAL.Dto;
 using ProductManagement.DAL.Interfaces;
-using ProductManagement_Business.Enum;
-using ProductManagement_DAL.Models;
-using System.Data;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Business.Services
 {
@@ -143,14 +142,14 @@ namespace ProductManagement.Business.Services
             var response = new BaseResponse();
             var oldUser = _userRepository.GetById(userViewModel.UserId);
 
-            var oldUserRole = Enum.GetName(typeof(RoleTypes), oldUser.RoleId);
+            var oldUserRole = System.Enum.GetName(typeof(RoleTypes), oldUser.RoleId);
             var user = new AppUser
             {
                 Id = userViewModel.UserId,
             };
             if (oldUser.RoleId != userViewModel.RoleId)
             {
-                var newRole = Enum.GetName(typeof(RoleTypes), userViewModel.RoleId);
+                var newRole = System.Enum.GetName(typeof(RoleTypes), userViewModel.RoleId);
 
 
                 var removeRoleFromUser = await _userManager.RemoveFromRoleAsync(oldUser, oldUserRole);

@@ -3,7 +3,7 @@ using ProductManagement.Core.Model;
 using ProductManagement.DAL.Repositories;
 using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
-using ProductManagement_DAL.Models;
+using ProductManagement.Entities.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
