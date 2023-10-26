@@ -1,31 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
+using ProductManagement.Core.Model;
 using ProductManagement.Entities.Models;
+using ProductManagement.Web.Models;
 
 namespace ProductManagement.Web.Controllers
 {
+    [Authorize(Roles = "Seller,Manager")]
     public class ProductController : Controller
     {
         private readonly ProductService _productService;
-        public ProductController(ProductService productService)
+        private readonly CategoryService _categoryService;
+        public ProductController(ProductService productService, CategoryService categoryService)
         {
             _productService = productService;
+            _categoryService = categoryService;
         }
         public IActionResult Index()
         {
-            return View();
-        }
-        public async Task<IActionResult> New()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Edit()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Detail()
-        {
-            return View();
+            var productListViewModel = new ProductListViewModel();
+            try
+            {
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+         
+                productListViewModel.Products = _productService.GetProductsByCompanyId(user.CompanyId);
+                productListViewModel.Categories = _categoryService.GetCategories().Select(x => new KeyValue { Key = x.CategoryId, Value = x.Name }).ToList();
+             
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(productListViewModel);
         }
 
         [HttpGet]
@@ -43,12 +53,16 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetProducts()
+        private async Task<ActionResult> GetProducts()
         {
             try
             {
-                var productList = _productService.GetProducts();
-                return Ok(productList);
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+                var productListViewModel = new List<ProductListViewModel>();
+                var productList = _productService.GetProductsByCompanyId(user.CompanyId);
+                var categories = _categoryService.GetCategories().Select(x => new KeyValue { Key = x.CategoryId, Value = x.Name }).ToList();
+                return Ok(productListViewModel);
             }
             catch (Exception ex)
             {
@@ -57,10 +71,13 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateProduct(Product product)
+        public async Task<ActionResult> Create(Product product)
         {
             try
             {
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+                product.CompanyId = user.CompanyId;
                 var productResponse = _productService.AddProduct(product);
                 return Ok(productResponse);
             }
@@ -70,7 +87,7 @@ namespace ProductManagement.Web.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult> UpdateProduct(Product product)
+        public async Task<ActionResult> Update(Product product)
         {
             try
             {
@@ -84,7 +101,7 @@ namespace ProductManagement.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> DeleteCategory(int productId)
+        public async Task<ActionResult> Delete(int productId)
         {
             try
             {

@@ -1,9 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
 using ProductManagement.Dto.Dto;
+using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
@@ -13,7 +18,28 @@ namespace ProductManagement.Web.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            var orderListViewModel = new List<Order>();
+            try
+            {
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+                if (user.Roles.Contains("Customer"))
+                {
+                    orderListViewModel = _orderService.GetOrdersByCompanyId(user.CompanyId, user.UserId);
+                }
+                else
+                {
+                    orderListViewModel = _orderService.GetOrdersByCompanyId(user.CompanyId);
+                }
+
+                
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return View(orderListViewModel);
         }
         public async Task<IActionResult> New()
         {

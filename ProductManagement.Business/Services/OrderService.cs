@@ -1,14 +1,8 @@
 ﻿using ProductManagement.Business.Models.ResponseModels;
-using ProductManagement.Core.Model;
-using ProductManagement.DAL.Repositories;
+using ProductManagement.DAL.Interfaces;
 using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductManagement.Business.Services
 {
@@ -17,11 +11,14 @@ namespace ProductManagement.Business.Services
         private readonly IOrderProductRepository _orderProductRepository;
         private readonly IOrderRepository _orderRepository;
         private readonly IProductRepository _productRepository;
-        public OrderService(IOrderProductRepository orderProductRepository, IOrderRepository orderRepository, IProductRepository productRepository)
+        private readonly IUserRepository _userRepository;
+        public OrderService(IOrderProductRepository orderProductRepository, IOrderRepository orderRepository,
+            IProductRepository productRepository, IUserRepository userRepository)
         {
             _orderProductRepository = orderProductRepository;
             _orderRepository = orderRepository;
             _productRepository = productRepository;
+            _userRepository = userRepository;
         }
 
 
@@ -32,6 +29,60 @@ namespace ProductManagement.Business.Services
             listProducts = GetOrderProductsByOrderId(orderId);
             return listProducts;
         }
+        public List<Order> GetOrdersByCompanyId(int companyId, int userId = 0)
+        {
+            if(userId == 0)
+            {
+                var orderList = _orderRepository
+                   .GetAll()
+                   .Join(
+                       _orderProductRepository.GetAll(),
+                       order => order.OrderId,
+                       orderProduct => orderProduct.OrderId,
+                       (order, orderProduct) => orderProduct)
+                   .Join(
+                       _productRepository.GetAll(x => x.CompanyId == companyId),
+                       orderProduct => orderProduct.ProductId,
+                       product => product.ProductId,
+                       (orderProduct, product) => orderProduct.Order)
+                   .ToList();
+                return orderList
+                            .Join(
+                                _userRepository.GetAll(),
+                                order => order.CustomerId,
+                                user => user.Id,
+                                (order, user) => new { Order = order, User = user }).Select(x => new Order { User = x.User, OrderNumber = x.Order.OrderNumber, Price = x.Order.Price, OrderId = x.Order.OrderId })
+                            .ToList();
+            }
+            else
+            {
+                var orderList = _orderRepository
+                   .GetAll(x => x.CustomerId == userId)
+                   .Join(
+                       _orderProductRepository.GetAll(),
+                       order => order.OrderId,
+                       orderProduct => orderProduct.OrderId,
+                       (order, orderProduct) => orderProduct)
+                   .Join(
+                       _productRepository.GetAll(x => x.CompanyId == companyId),
+                       orderProduct => orderProduct.ProductId,
+                       product => product.ProductId,
+                       (orderProduct, product) => orderProduct.Order)
+                   .ToList();
+                return orderList
+                            .Join(
+                                _userRepository.GetAll(),
+                                order => order.CustomerId,
+                                user => user.Id,
+                                (order, user) => new { Order = order, User = user }).Select(x => new Order { User = x.User, OrderNumber = x.Order.OrderNumber, Price = x.Order.Price, OrderId = x.Order.OrderId })
+                            .ToList();
+            }
+           
+           
+
+
+        }
+
 
         private List<Product> GetOrderProductsByOrderId(int orderId)
         {
@@ -94,9 +145,9 @@ namespace ProductManagement.Business.Services
 
                 if (orderResponse != null)
                 {
-                   var orderId = orderResponse.OrderId;
+                    var orderId = orderResponse.OrderId;
 
-                   if(order.Products.Count > 0)
+                    if (order.Products.Count > 0)
                     {
                         foreach (var item in order.Products)
                         {
@@ -104,10 +155,9 @@ namespace ProductManagement.Business.Services
                             {
                                 OrderId = order.OrderId,
                                 ProductId = item.ProductId,
-                                CompanyId = item.CompanyId,
                             };
                             var productResponse = _orderProductRepository.Add(orderProduct);
-                            if(productResponse != null)
+                            if (productResponse != null)
                             {
                                 continue;
                             }
@@ -160,7 +210,7 @@ namespace ProductManagement.Business.Services
                     {
                         _orderProductRepository.Delete(item.OrderProductId);
                     }
-                    if(order.Products.Count > 0)
+                    if (order.Products.Count > 0)
                     {
                         foreach (var item in order.Products)
                         {
@@ -168,7 +218,6 @@ namespace ProductManagement.Business.Services
                             {
                                 OrderId = order.OrderId,
                                 ProductId = item.ProductId,
-                                CompanyId = item.CompanyId,
                             };
                             var productResponse = _orderProductRepository.Add(orderProduct);
                             if (productResponse != null)
@@ -221,8 +270,8 @@ namespace ProductManagement.Business.Services
 
                 _orderRepository.Delete(order);
 
-                var products = _orderProductRepository.GetAll(x => x.OrderId ==  orderId).ToList();
-                if(products != null && products.Count > 0)
+                var products = _orderProductRepository.GetAll(x => x.OrderId == orderId).ToList();
+                if (products != null && products.Count > 0)
                 {
                     foreach (var item in products)
                     {

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
 using ProductManagement.Dto.Dto;
@@ -6,6 +7,7 @@ using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
+    [Authorize(Roles = "Manager")]
     public class CompanyController: Controller
     {
         private readonly CompanyService _companyService;

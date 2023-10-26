@@ -6,7 +6,7 @@ using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
-    [Authorize(Roles = "Manager")]
+    [Authorize(Roles = "Manager,Seller")]
     public class CategoryController : Controller
     {
         private readonly CategoryService _categoryService;

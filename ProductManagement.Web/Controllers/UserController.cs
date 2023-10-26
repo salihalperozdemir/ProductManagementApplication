@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
 using ProductManagement.DAL.Dto;
-using ProductManagement.Web.Models;
-using ProductManagement.Business.Enum;
 using ProductManagement.Entities.Models;
-using System.Data.Entity;
+using ProductManagement.Web.Models;
 
 namespace ProductManagement.Web.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Manager")]
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> _userManager;

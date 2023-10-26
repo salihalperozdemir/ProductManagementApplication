@@ -104,7 +104,7 @@ namespace ProductManagement.Business.Services
                 response.Email = email;
                 response.FirstName = user.FirstName;
                 response.LastName = user.LastName;
-
+                response.CompanyId = user.CompanyId;
                 var roles = await _userManager.GetRolesAsync(user);
                 if (roles.Count > 0)
                 {

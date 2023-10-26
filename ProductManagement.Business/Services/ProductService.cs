@@ -15,21 +15,23 @@ namespace ProductManagement.Business.Services
     public class ProductService
     {
         private readonly IProductRepository _productRepository;
-        public ProductService(IProductRepository productRepository)
+        private readonly ICategoryRepository _categoryRepository;
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
 
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
         public List<KeyValue> GetProductList(int companyId = 0)
         {
             var listProducts = new List<KeyValue>();
-            if(companyId == 0)
+            if (companyId == 0)
             {
-                listProducts = _productRepository.GetAll().Select(x => new KeyValue { Key = x.ProductId, Value =x.Code + " " + x.Name }).ToList();
+                listProducts = _productRepository.GetAll().Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
             }
             else
             {
-                listProducts = _productRepository.GetAll(x=> x.CompanyId == companyId).Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
+                listProducts = _productRepository.GetAll(x => x.CompanyId == companyId).Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
             }
             return listProducts;
         }
@@ -134,6 +136,45 @@ namespace ProductManagement.Business.Services
             var productList = _productRepository.GetAll().ToList();
 
             return productList;
+        }
+        public List<Product> GetProductsByCompanyId(int companyId)
+        {
+            if (companyId == 1)
+            {
+                return _productRepository
+                        .GetAll()
+                        .Join(
+                            _categoryRepository.GetAll(),
+                            product => product.CategoryId,
+                            category => category.CategoryId,
+                            (product, category) => new Product
+                            {
+                                ProductId = product.ProductId,
+                                Name = product.Name,
+                                Code = product.Code,
+                                Price = product.Price,
+                                Category = category,
+                            })
+                        .ToList();
+            }
+            else
+            {
+                return _productRepository.GetAll(x => x.CompanyId == companyId)
+                        .Join(
+                            _categoryRepository.GetAll(),
+                            product => product.CategoryId,
+                            category => category.CategoryId,
+                            (product, category) => new Product
+                            {
+                                ProductId = product.ProductId,
+                                Name = product.Name,
+                                Code = product.Code,
+                                Price = product.Price,
+                                Category = category,
+                            })
+                        .ToList();
+            }
+
         }
         public ProductResponse DeleteProduct(int productId)
         {
