@@ -1,4 +1,4 @@
-# ProductManagementApplication
+# Product Management Application
 There is a code-first approach for creating db.
 Database name is ProductManagement and it is created on local automatically.
 After database creation there is a file called Insert Script.sql
