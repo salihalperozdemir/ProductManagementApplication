@@ -315,9 +315,12 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        var counter = 0;
+                    }
                     @if (Model.Count > 0)
                     {
-                        var counter = 1;
+                        counter = 1;
                         foreach (var item in Model)
                         {
                             <tr>
@@ -327,26 +330,18 @@
                                 <td>@item.OrderNumber</td>
                                 <td>@item.Price</td>
                                 <td style="float:right;">
-                                    <a data-id="@item.OrderId" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                                    <a data-id="@item.OrderId" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                                    <a href="@Url.Action("Detail","Order", new {orderId = @item.OrderId})" data-id="@item.OrderId" class="edit"><i class="material-icons" data-toggle="tooltip" title="Detail">arrow_forward</i></a>
+                                    <a href="#deleteOrderModal" data-id="@item.OrderId" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                 </td>
                             </tr>
                             counter++;
                         }
+                        counter--;
                     }
                 </tbody>
             </table>
             <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+                <div class="hint-text">Showing <b>@counter</b> out of <b>@counter</b> entries</div>
             </div>
         </div>
     </div>
@@ -410,7 +405,7 @@
             var deleteId = $('#deleteOrderModal').attr('categoryId');
             $.ajax({
                 type: "GET",
-                url: "/Order/Delete?categoryId=" + deleteId,
+                url: "/Order/Delete?orderId=" + deleteId,
                 success: function (response) {
                     if (response.isOk) {
                         window.location.reload();

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
+using ProductManagement.Core.Response;
 using ProductManagement.DAL.Dto;
 using ProductManagement.Entities.Models;
 using ProductManagement.Web.Models;
@@ -12,20 +14,21 @@ namespace ProductManagement.Web.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
-        private readonly UserServices _userService;
+        private readonly UserService _userService;
         private readonly CompanyService _companyService;
         
-        public UserController(UserManager<AppUser> userManager, UserServices userServices, CompanyService companyService)
+        public UserController(UserManager<AppUser> userManager, UserService userServices, CompanyService companyService)
         {
             _userManager = userManager;
             _userService = userServices;
             _companyService = companyService;
         }
 
-
+        //List of users page 
         public async Task<IActionResult> Index()
         {
             var listUsers = _userManager.Users.ToList();
+            //Get all companies for selectbox
             var companies = _companyService.GetCompanyList();
             var userListViews = new UserListViewModel
             {
@@ -34,72 +37,79 @@ namespace ProductManagement.Web.Controllers
             };
             return View(userListViews);
         }
-
-        //public async Task<IActionResult> Detail(int userId)
-        //{
-        //    var userModel = _userService.GetUserById(userId).Result;
-        //    var companyList = _companyService.GetCompanyList();
-        //    var userViewModel = new UserViewModel
-        //    {
-        //        User = userModel,
-        //        Companies = companyList
-        //    };
-
-        //    return View(userViewModel);
-        //}
-
-        //public async Task<IActionResult> New()
-        //{
-        //    var companyList = _companyService.GetCompanyList();
-            
-        //    return View(companyList);
-        //}
+        //Get user detail
         [HttpGet]
         public async Task<IActionResult> Get(int userId)
         {
             var userResponse = new UserViewModelDto();
-            userResponse = _userService.GetUserById(userId).Result;
-            return Ok(userResponse);
+            try
+            {
+                userResponse = _userService.GetUserById(userId).Result;
+                return Ok(userResponse);
+            }
+            catch (Exception ex)
+            {
+                return Ok(userResponse);
+                
+            }
+           
         }
-
+        //Create user method
         [HttpPost]
         public async Task<IActionResult> Create(UserViewModelDto user)
         {
-            var userResponse = await _userService.CreateUser(user);
-            if(userResponse.IsOk) {
-                userResponse.ReturnUrl = "/User/Index";
+            var userResponse = new SignupResponse();
+            try
+            {
+                userResponse = await _userService.CreateUser(user);
+                if (userResponse.IsOk)
+                {
+                    //redirection after creation
+                    userResponse.ReturnUrl = "/User/Index";
+                }
+                return Ok(userResponse);
             }
-            return Ok(userResponse);
+            catch (Exception ex)
+            {
+                userResponse.IsOk = false;
+                userResponse.Message = ex.Message;
+                return Ok(userResponse);
+            }
         }
-
+        //Update user method
         [HttpPost]
         public async Task<IActionResult> Update(UserViewModelDto user)
         {
-            var userResponse = await _userService.UpdateUser(user);
-            if (userResponse.IsOk)
+            var userResponse = new BaseResponse();
+            try
             {
-               
+                userResponse = await _userService.UpdateUser(user);
+                return Ok(userResponse);
             }
-            return Ok(userResponse);
+            catch (Exception ex)
+            {
+                userResponse.IsOk = false;
+                userResponse.Message = ex.Message;
+                return Ok(userResponse);
+            }
         }
-
+        //Delete user method
         [HttpGet]
         public async Task<IActionResult> Delete(int userId)
         {
-            var userResponse = await _userService.DeleteUser(userId);
-            if (userResponse.IsOk)
+            var userResponse = new BaseResponse();
+            try
             {
-                
+                userResponse = await _userService.DeleteUser(userId);
+                return Ok(userResponse);
             }
-            return Ok(userResponse);
-        }
-        [HttpGet]
-        public async Task<List<AppUser>> ListOfAllUsers()
-        {
-
-            var listUsers = _userManager.Users.ToList();
-
-            return listUsers;
+            catch (Exception ex)
+            {
+                userResponse.IsOk = false;
+                userResponse.Message = ex.Message;
+                return Ok(userResponse);
+            }
+         
         }
     }
 }

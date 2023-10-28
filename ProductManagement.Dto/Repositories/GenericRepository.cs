@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 
 namespace ProductManagement.DAL.Repositories
 {
+    //Generic Repository Implementation for using every repository for general purposes
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationDbContext _dbContext;

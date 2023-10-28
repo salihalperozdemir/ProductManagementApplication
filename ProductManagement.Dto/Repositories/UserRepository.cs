@@ -14,7 +14,7 @@ namespace ProductManagement.DAL.Repositories
         }
         public bool CheckExistingEmail(string email)
         {
-            return GetAll().Where(x => x.Email == email && x.Valid).Any();
+            return GetAll().Where(x => x.Email == email).Any();
         }
     }
 }

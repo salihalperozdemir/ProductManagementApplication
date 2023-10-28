@@ -1,14 +1,7 @@
 ﻿using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Core.Model;
-using ProductManagement.DAL.Repositories;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductManagement.Business.Services
 {
@@ -22,19 +15,31 @@ namespace ProductManagement.Business.Services
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
+        //Get products by company filtering for listingn
         public List<KeyValue> GetProductList(int companyId = 0)
         {
             var listProducts = new List<KeyValue>();
-            if (companyId == 0)
+            try
             {
-                listProducts = _productRepository.GetAll().Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
+                if (companyId == 0)
+                {
+                    listProducts = _productRepository.GetAll().Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
+                }
+                else
+                {
+                    listProducts = _productRepository.GetAll(x => x.CompanyId == companyId).Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
+                }
+                return listProducts;
             }
-            else
+            catch (Exception ex)
             {
-                listProducts = _productRepository.GetAll(x => x.CompanyId == companyId).Select(x => new KeyValue { Key = x.ProductId, Value = x.Code + " " + x.Name }).ToList();
+                return listProducts;
             }
-            return listProducts;
+          
+           
         }
+
+        //Getting product details by productId
         public ProductResponse GetProduct(int productId)
         {
             var response = new ProductResponse();
@@ -65,6 +70,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
+        //Add new product to system
         public ProductResponse AddProduct(Product product)
         {
             var response = new ProductResponse { IsOk = true };
@@ -92,6 +98,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
+        //Update product properties
         public ProductResponse UpdateProduct(Product product)
         {
             var response = new ProductResponse { IsOk = true };
@@ -102,7 +109,7 @@ namespace ProductManagement.Business.Services
             }
             try
             {
-                var productExist = _productRepository.GetById(product.CompanyId);
+                var productExist = _productRepository.GetById(product.ProductId);
                 if (productExist == null)
                 {
                     response.IsOk = false;
@@ -131,16 +138,27 @@ namespace ProductManagement.Business.Services
             }
 
         }
+        //Listing products for selectboxes
         public List<Product> GetProducts()
         {
-            var productList = _productRepository.GetAll().ToList();
-
-            return productList;
+            var productList = new List<Product>();
+            try
+            {
+                productList = _productRepository.GetAll().ToList();
+                return productList;
+            }
+            catch (Exception ex)
+            {
+                return productList;
+            }
         }
+        //Get products which belongs to companies
         public List<Product> GetProductsByCompanyId(int companyId)
         {
+
             if (companyId == 1)
             {
+                //for getting products with category information to join for all companies
                 return _productRepository
                         .GetAll()
                         .Join(
@@ -159,6 +177,7 @@ namespace ProductManagement.Business.Services
             }
             else
             {
+                //for getting products with category information to join for specific company
                 return _productRepository.GetAll(x => x.CompanyId == companyId)
                         .Join(
                             _categoryRepository.GetAll(),
@@ -176,6 +195,7 @@ namespace ProductManagement.Business.Services
             }
 
         }
+        //Delete product from system
         public ProductResponse DeleteProduct(int productId)
         {
             var response = new ProductResponse { IsOk = false };

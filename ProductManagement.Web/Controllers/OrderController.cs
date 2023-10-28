@@ -12,28 +12,40 @@ namespace ProductManagement.Web.Controllers
     public class OrderController : Controller
     {
         private readonly OrderService _orderService;
-        public OrderController(OrderService orderService)
+        private readonly CategoryService _categoryService;
+        private readonly CompanyService _companyService;
+        private readonly ProductService _productService;
+        private readonly UserService _userServices;
+        public OrderController(OrderService orderService, CategoryService categoryService, CompanyService companyService, ProductService productService, UserService userServices)
         {
             _orderService = orderService;
+            _categoryService = categoryService;
+            _companyService = companyService;
+            _productService = productService;
+            _userServices = userServices;
         }
+        
+        //Get list of orders
         public IActionResult Index()
         {
             var orderListViewModel = new List<Order>();
             try
             {
+                //Get orders by role if manager sees everything customer only see which are belongs to, and seller sees only it's company have
                 var userModel = HttpContext.Session.GetString("User");
                 var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
                 if (user.Roles.Contains("Customer"))
                 {
-                    orderListViewModel = _orderService.GetOrdersByCompanyId(user.CompanyId, user.UserId);
+                    orderListViewModel = _orderService.GetOrdersByCustomerId(user.UserId);
+                }
+                else if (user.Roles.Contains("Manager"))
+                {
+                    orderListViewModel = _orderService.GetOrders();
                 }
                 else
                 {
                     orderListViewModel = _orderService.GetOrdersByCompanyId(user.CompanyId);
                 }
-
-                
-
             }
             catch (Exception ex)
             {
@@ -41,53 +53,65 @@ namespace ProductManagement.Web.Controllers
             }
             return View(orderListViewModel);
         }
+        //For new order page design with need data for selectboxes and for creator
         public async Task<IActionResult> New()
         {
-            return View();
+            var orderViewModel = new OrderViewModelDto();
+            try
+            {
+                //selectbox data
+                orderViewModel.Categories = _categoryService.GetCategories();
+                orderViewModel.Brand = _companyService.GetCompanies();
+                orderViewModel.Products = _productService.GetProducts();
+                //user data
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+                orderViewModel.User = new AppUser { FirstName = user.FirstName, Id = user.UserId, LastName = user.LastName, Email = user.Email };
+                return View(orderViewModel);
+            }
+            catch (Exception ex)
+            {
+                return View(orderViewModel);
+            }
+           
         }
-        public async Task<IActionResult> Edit()
-        {
-            return View();
-        }
+        //Preview for order
         public async Task<IActionResult> Detail()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> GetOrder(int orderId)
-        {
+            var orderViewModel = new OrderViewModelDto();
             try
             {
-                var order = _orderService.GetOrder(orderId);
-                return Ok(order);
+                //Get order detail
+                var orderId = Convert.ToInt32(Request.Query["orderId"]);
+                orderViewModel = _orderService.GetOrder(orderId).OrderDto;
+
+                //These data for product list view
+                orderViewModel.Categories = _categoryService.GetCategories();
+                orderViewModel.Brand = _companyService.GetCompanies();
+                orderViewModel.Products = _productService.GetProducts();
+                orderViewModel.User = new AppUser { FirstName = orderViewModel.User.FirstName, Id = orderViewModel.User.Id, LastName = orderViewModel.User.LastName, Email = orderViewModel.User.Email };
+
+                return View(orderViewModel);
             }
             catch (Exception ex)
             {
-                return Ok(ex);
+                return View(orderViewModel);
             }
+         
         }
-
-        [HttpGet]
-        public async Task<ActionResult> GetOrders()
-        {
-            try
-            {
-                var orderList = _orderService.GetOrders();
-                return Ok(orderList);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-
+        //Create order method
         [HttpPost]
-        public async Task<ActionResult> CreateOrder(OrderDto order)
+        public async Task<ActionResult> Create(OrderViewModelDto order)
         {
             try
             {
+                //Get customer data from logged in
+                var userModel = HttpContext.Session.GetString("User");
+                var user = JsonConvert.DeserializeObject<LoginResponse>(userModel);
+                order.CustomerId = user.UserId;
                 var orderResponse = _orderService.AddOrder(order);
+                //after adding order redirect to list
+                orderResponse.ReturnUrl = "/Order/Index";
                 return Ok(orderResponse);
             }
             catch (Exception ex)
@@ -95,22 +119,9 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
-        [HttpPost]
-        public async Task<ActionResult> UpdateOrder(OrderDto order)
-        {
-            try
-            {
-                var orderResponse = _orderService.UpdateOrder(order);
-                return Ok(orderResponse);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> DeleteOrder(int orderId)
+        //Delete order
+        [HttpGet]
+        public async Task<ActionResult> Delete(int orderId)
         {
             try
             {

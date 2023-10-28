@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
+    //Only manager can access
     [Authorize(Roles = "Manager")]
     public class CompanyController: Controller
     {
@@ -15,24 +14,24 @@ namespace ProductManagement.Web.Controllers
         {
             _companyService  = companyService;
         }
+
+        //List view for companies
         public async Task<IActionResult> Index()
         {
-            var companies = _companyService.GetCompanies();
-            return View(companies);
-        }
-        public async Task<IActionResult> New()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Edit()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Detail()
-        {
-            return View();
-        }
+            var companies = new List<Company>();
+            try
+            {
+                companies = _companyService.GetCompanies();
+                return View(companies);
+            }
+            catch (Exception ex)
+            {
 
+                companies = _companyService.GetCompanies();
+                return View(companies);
+            }
+        }
+        //Detail informations about company
         [HttpGet]
         public async Task<ActionResult> Get(int companyId)
         {
@@ -47,20 +46,7 @@ namespace ProductManagement.Web.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetCompanies()
-        {
-            try
-            {
-                var companyList = _companyService.GetCompanies();
-                return Ok(companyList);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-
+        //New company create method
         [HttpPost]
         public async Task<ActionResult> Create(Company company)
         {
@@ -74,6 +60,7 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
+        //Update company method
         [HttpPost]
         public async Task<ActionResult> Update(Company company)
         {
@@ -87,7 +74,7 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
-
+        //Delete company method
         [HttpGet]
         public async Task<ActionResult> Delete(int companyId)
         {

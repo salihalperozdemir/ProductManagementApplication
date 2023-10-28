@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProductManagement.DAL.Dto
+﻿namespace ProductManagement.DAL.Dto
 {
-	public class UserViewModelDto
+    public class UserViewModelDto
 	{
         public int UserId { get; set; }
         public string FirstName { get; set; }

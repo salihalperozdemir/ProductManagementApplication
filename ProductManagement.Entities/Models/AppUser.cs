@@ -10,6 +10,5 @@ namespace ProductManagement.Entities.Models
         public string Password { get; set; }
         public int RoleId { get; set; }
         public int CompanyId { get; set; }
-        public bool Valid { get; set; }
     }
 }

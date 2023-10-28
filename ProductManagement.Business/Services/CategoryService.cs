@@ -1,13 +1,7 @@
 ﻿using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Core.Model;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductManagement.Business.Services
 {
@@ -19,14 +13,23 @@ namespace ProductManagement.Business.Services
 
             _categoryRepository = categoryRepository;
         }
+        //List categories for selectbox data
         public List<KeyValue> GetCategoryList()
         {
             var listCategories = new List<KeyValue>();
+            try
+            {
+                listCategories = _categoryRepository.GetAll().Select(x => new KeyValue { Key = x.CategoryId, Value = x.Name }).ToList();
 
-            listCategories = _categoryRepository.GetAll().Select(x => new KeyValue { Key = x.CategoryId, Value = x.Name }).ToList();
-
-            return listCategories;
+                return listCategories;
+            }
+            catch (Exception ex)
+            {
+                return listCategories;
+            }
+           
         }
+        //Get category detail
         public CategoryResponse GetCategory(int categoryId)
         {
             var response = new CategoryResponse();
@@ -54,6 +57,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
+        //Create new category
         public CategoryResponse AddCategory(Category category)
         {
             var response = new CategoryResponse { IsOk = true };
@@ -81,6 +85,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
+        //Update category
         public CategoryResponse UpdateCategory(Category category)
         {
             var response = new CategoryResponse { IsOk = true };
@@ -120,12 +125,23 @@ namespace ProductManagement.Business.Services
             }
 
         }
+        //Get all categories for listing
         public List<Category> GetCategories()
         {
-            var categoryList = _categoryRepository.GetAll().ToList();
-
-            return categoryList;
+            var categoryList = new List<Category>();
+           
+            try
+            {
+                categoryList = _categoryRepository.GetAll().ToList();
+                return categoryList;
+            }
+            catch (Exception ex)
+            {
+                return categoryList;
+            }
+           
         }
+        //Delete category from system
         public CategoryResponse DeleteCategory(int categoryId)
         {
             var response = new CategoryResponse { IsOk = false };

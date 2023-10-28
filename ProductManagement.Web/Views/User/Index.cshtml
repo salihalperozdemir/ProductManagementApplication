@@ -7,15 +7,10 @@
     Layout = "_Layout";
 }
 
-
-
-
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap CRUD Data Table for Database with Modal Form</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -311,9 +306,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @{
+                        var counter = 0;
+                        }
+                   
                         @if (Model.Users.Count > 0)
                         {
-                            var counter = 1;
+                            counter++;
+
                             foreach (var item in Model.Users)
                             {
                                 <tr>
@@ -326,23 +326,16 @@
                                     <a href="#editEmployeeModal" data-id="@item.Id" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
                                     <a href="#deleteEmployeeModal" data-id="@item.Id" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
                                     </td>
-                                </tr>
-                                counter++;
-                        }
-                        }
+                            </tr>
+                            counter++;
+                            }
+                        counter--;
+                    }
                     </tbody>
                 </table>
                 <div class="clearfix">
-                    <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a href="#">Previous</a></li>
-                        <li class="page-item"><a href="#" class="page-link">1</a></li>
-                        <li class="page-item"><a href="#" class="page-link">2</a></li>
-                        <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                        <li class="page-item"><a href="#" class="page-link">4</a></li>
-                        <li class="page-item"><a href="#" class="page-link">5</a></li>
-                        <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                    </ul>
+                    <div class="hint-text">Showing <b>@counter</b> out of <b>@counter</b> entries</div>
+                    
                 </div>
             </div>
         </div>
@@ -379,7 +372,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="lname">Roles:</label>
-                                <select id="roleSelectc" class="form-control">
+                                <select style="height: 37px;" id="roleSelectc" class="form-control">
                                     <option value="1">
                                         Customer
                                     </option>
@@ -393,7 +386,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="lname">Company:</label>
-                                <select id="companySelectc" class="form-control">
+                                <select style="height: 37px;" id="companySelectc" class="form-control">
                                     @for (int i = 0; i < Model.Companies.Count(); i++)
                                     {
                                         if (i == 0)
@@ -460,7 +453,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="lname">Roles:</label>
-                                    <select id="roleSelectE" class="form-control">
+                                    <select style="height: 37px;" id="roleSelectE" class="form-control">
                                         <option value="1">
                                             Customer
                                         </option>
@@ -474,7 +467,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <label for="lname">Company:</label>
-                                    <select id="companySelectE" class="form-control">
+                                    <select style="height: 37px;" id="companySelectE" class="form-control">
                                         @foreach (var item in Model.Companies)
                                         {
                                             <option value="@item.Key">
@@ -597,7 +590,6 @@
                     url: "/User/Create",
                     data: signupViewModel,
                     success: function (response) {
-                        debugger;
                         // Display the response
                         if (response.isOk) {
                             window.location.reload()

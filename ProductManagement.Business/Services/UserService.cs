@@ -8,19 +8,17 @@ using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Business.Services
 {
-    public class UserServices
+    public class UserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IUserRoleRepository _userRoleRepository;
         private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<AppRole> _userRoleManager;
-        public UserServices(IUserRepository userRepository, IUserRoleRepository userRoleRepository, UserManager<AppUser> userManager, RoleManager<AppRole> userRoleManager)
+        public UserService(IUserRepository userRepository, UserManager<AppUser> userManager)
         {
             _userRepository = userRepository;
-            _userRoleRepository = userRoleRepository;
             _userManager = userManager;
-            _userRoleManager = userRoleManager;
         }
+
+        //Create user method and assing default customer and company All
 
         public async Task<SignupResponse> CreateUser(UserViewModelDto model)
         {
@@ -48,8 +46,7 @@ namespace ProductManagement.Business.Services
                             CompanyId = model.CompanyId != 0 ? model.CompanyId : 1,
                             RoleId = model.RoleId != 0 ? model.RoleId : 1,
                             LastName = model.LastName,
-                            Password = model.Password,
-                            Valid = true
+                            Password = model.Password
                         };
                         var userResponse = await _userManager.CreateAsync(user, user.Password);
 
@@ -68,10 +65,10 @@ namespace ProductManagement.Business.Services
                                     userRoleAssign = await _userManager.AddToRoleAsync(user, "Seller");
                                     break;
                                 default:
-                                    
+
                                     break;
                             }
-                           
+
 
                             if (userRoleAssign.Succeeded)
                             {
@@ -94,27 +91,40 @@ namespace ProductManagement.Business.Services
             }
         }
 
+        //Get user informations by email information
         public async Task<LoginResponse> GetUserByEmail(string email)
         {
-            var user = _userRepository.GetAll().Where(x => x.Email == email).FirstOrDefault();
             var response = new LoginResponse();
-
-            if (user != null)
+            try
             {
-                response.Email = email;
-                response.FirstName = user.FirstName;
-                response.LastName = user.LastName;
-                response.CompanyId = user.CompanyId;
-                var roles = await _userManager.GetRolesAsync(user);
-                if (roles.Count > 0)
+                var user = _userRepository.GetAll().Where(x => x.Email == email).FirstOrDefault();
+
+
+                if (user != null)
                 {
-                    response.Roles = roles;
+                    response.UserId = user.Id;
+                    response.Email = email;
+                    response.FirstName = user.FirstName;
+                    response.LastName = user.LastName;
+                    response.CompanyId = user.CompanyId;
+                    var roles = await _userManager.GetRolesAsync(user);
+                    if (roles.Count > 0)
+                    {
+                        response.Roles = roles;
+                    }
                 }
+                return response;
             }
-            return response;
+            catch (Exception ex)
+            {
+                response.IsOk = false;
+                response.Message = ex.Message;
+                return response;
+            }
+           
 
         }
-
+        //Get user informations by user id
         public async Task<UserViewModelDto> GetUserById(int userId)
         {
             var userViewModel = new UserViewModelDto();
@@ -137,6 +147,7 @@ namespace ProductManagement.Business.Services
             }
         }
 
+        //Update user method for controlling role and company
         public async Task<BaseResponse> UpdateUser(UserViewModelDto userViewModel)
         {
             var response = new BaseResponse();
@@ -189,11 +200,12 @@ namespace ProductManagement.Business.Services
             return response;
         }
 
+        //Delete user method
         public async Task<BaseResponse> DeleteUser(int userId)
         {
             var response = new BaseResponse { IsOk = false };
             var user = _userRepository.GetById(userId);
-            if(user != null)
+            if (user != null)
             {
                 var deleteResponse = await _userManager.DeleteAsync(user);
                 if (deleteResponse.Succeeded)
@@ -214,18 +226,13 @@ namespace ProductManagement.Business.Services
             return response;
         }
 
-        //private async Task<int> GetUserRole(AppUser user)
-        //{
-        //	var checkCustomerRole = await _userManager.IsInRoleAsync(user, "Customer");
-        //	var checkSellerRole = await _userManager.IsInRoleAsync(user, "Seller");
-        //	var checkAdminRole = await _userManager.IsInRoleAsync(user, "Administrator");
+        //Get all customer for listing
+        public async Task<List<AppUser>> GetCustomers()
+        {
+            var userList = _userManager.Users.Where(x => x.RoleId == (int)RoleTypes.Customer).ToList();
 
-        //	if (checkCustomerRole) return (int)RoleTypes.Customer;
-        //	if (checkSellerRole) return (int)RoleTypes.Seller;
-        //	if (checkAdminRole) return (int)RoleTypes.Administrator;
-
-        //	return 0;
-        //}
+            return userList;
+        }
 
 
     }

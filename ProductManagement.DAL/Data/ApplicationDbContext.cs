@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using ProductManagement.Entities.Models;
 
 namespace ProductManagement_DAL.Data
 {
-	public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int>
+    public class ApplicationDbContext : IdentityDbContext<AppUser, AppRole, int>
 	{
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

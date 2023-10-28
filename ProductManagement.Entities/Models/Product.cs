@@ -8,7 +8,7 @@ namespace ProductManagement.Entities.Models
         public int ProductId { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
-        public string Price { get; set; }
+        public decimal Price { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
         public int CompanyId { get; set; }

@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using ProductManagement.Business.Models;
 using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
-using ProductManagement.Web.Api.Helpers;
-using ProductManagement.Entities.Models;
 using ProductManagement.DAL.Dto;
+using ProductManagement.Entities.Models;
+using ProductManagement.Web.Api.Helpers;
 
 namespace ProductManagement.Web.Api.Controllers
 {
@@ -15,19 +13,17 @@ namespace ProductManagement.Web.Api.Controllers
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        private UserServices _userServices;
+        private UserService _userServices;
         private AuthHelper _authHelper = new AuthHelper();
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly UserManager<AppUser> _userManager;
         private IConfiguration _configuration;
-        public LoginController(UserServices userServices, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
+        public LoginController(UserService userServices, SignInManager<AppUser> signInManager, IConfiguration configuration)
         {
             _userServices = userServices;
             _signInManager = signInManager;
-            _userManager = userManager;
             _configuration = configuration;
         }
-
+        //Signup method 
         [HttpPost]
         [Route("Signup")]
         public async Task<ActionResult> Signup(UserViewModelDto model)
@@ -42,7 +38,7 @@ namespace ProductManagement.Web.Api.Controllers
                 return Ok(new SignupResponse { IsOk = false, Message = ex.Message });
             }
         }
-
+        //Login method
         [HttpPost]
         [Route("Login")]
         public async Task<ActionResult> Login([FromBody] LoginViewModelDto model)

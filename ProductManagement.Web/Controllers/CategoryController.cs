@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Controllers
 {
+    //Manager and Seller can use this pages 
     [Authorize(Roles = "Manager,Seller")]
     public class CategoryController : Controller
     {
@@ -14,25 +14,23 @@ namespace ProductManagement.Web.Controllers
         {
             _categoryService = categoryService;
         }
+
+        //List view for categories
         public IActionResult Index()
         {
-            var categoryList = _categoryService.GetCategories();
-            return View(categoryList);
+            var categoryList = new List<Category>();
+            try
+            {
+                categoryList = _categoryService.GetCategories();
+                return View(categoryList);
+            }
+            catch (Exception ex)
+            {
+                return View(categoryList);
+            }
+            
         }
-        public async Task<IActionResult> New()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Edit()
-        {
-            return View();
-        }
-        public async Task<IActionResult> Detail()
-        {
-            return View();
-        }
-
-
+        //Detail informations about category
         [HttpGet]
         public async Task<ActionResult> Get(int categoryId)
         {
@@ -46,21 +44,7 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
-
-        [HttpGet]
-        public async Task<ActionResult> GetCategories()
-        {
-            try
-            {
-                var categoryList = _categoryService.GetCategories();
-                return Ok(categoryList);
-            }
-            catch (Exception ex)
-            {
-                return Ok(ex);
-            }
-        }
-
+        //New category create method
         [HttpPost]
         public async Task<ActionResult> Create(Category category)
         {
@@ -74,6 +58,8 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
+
+        //Update category method
         [HttpPost]
         public async Task<ActionResult> Update(Category category)
         {
@@ -87,7 +73,7 @@ namespace ProductManagement.Web.Controllers
                 return Ok(ex);
             }
         }
-
+        //Delete category method
         [HttpGet]
         public async Task<ActionResult> Delete(int categoryId)
         {

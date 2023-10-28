@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProductManagement.Business.Services;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Entities.Models;
 
 namespace ProductManagement.Web.Api.Controllers
 {
+    //Only customer role can access to these methods
     [ApiController]
     [Authorize(Roles="Customer")]
     public class CompanyController : Controller
@@ -15,6 +15,8 @@ namespace ProductManagement.Web.Api.Controllers
         {
             _companyService = companyService;
         }
+
+        #region CRUD operations for Company
         [HttpGet]
         [Route("Get/{companyId}")]
         public async Task<ActionResult> GetCompany(int companyId)
@@ -88,5 +90,8 @@ namespace ProductManagement.Web.Api.Controllers
                 return Ok(ex);
             }
         }
+        #endregion
+
+
     }
 }

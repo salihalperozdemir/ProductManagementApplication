@@ -5,7 +5,7 @@ namespace ProductManagement.Business.Models.ResponseModels
 {
     public class OrderResponse : BaseResponse
     {
-        public OrderDto OrderDto { get; set; }
+        public OrderViewModelDto OrderDto { get; set; }
 
     }
 }

@@ -1,15 +1,7 @@
 ﻿using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Core.Model;
-using ProductManagement.Core.Response;
-using ProductManagement.DAL.Repositories;
-using ProductManagement.Dto.Dto;
 using ProductManagement.Dto.Interfaces;
 using ProductManagement.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProductManagement.Business.Services
 {
@@ -21,14 +13,23 @@ namespace ProductManagement.Business.Services
 
             _companyRepository = companyRepository;
         }
+        //List companies for selectbox data
         public List<KeyValue> GetCompanyList()
         {
             var listCompanies = new List<KeyValue>();
+            try
+            {
+                listCompanies = _companyRepository.GetAll().Select(x => new KeyValue { Key = x.CompanyId, Value = x.CompanyName }).ToList();
 
-            listCompanies = _companyRepository.GetAll().Select(x => new KeyValue { Key = x.CompanyId, Value = x.CompanyName }).ToList();
-
-            return listCompanies;
+                return listCompanies;
+            }
+            catch (Exception ex)
+            {
+                return listCompanies;
+            }
+            
         }
+        //Get company detail
         public CompanyResponse GetCompany(int companyId)
         {
             var response = new CompanyResponse();
@@ -56,6 +57,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }      
         }
+        //Create new company
         public CompanyResponse AddCompany(Company company)
         {
             var response = new CompanyResponse { IsOk = true };
@@ -83,6 +85,7 @@ namespace ProductManagement.Business.Services
                 return response;
             }
         }
+        //Update company
         public CompanyResponse UpdateCompany(Company company)
         {
             var response = new CompanyResponse { IsOk = true };
@@ -122,12 +125,24 @@ namespace ProductManagement.Business.Services
             }
 
         }
+        
+        //Get all companies for listing
         public List<Company> GetCompanies()
         {
-            var companyList = _companyRepository.GetAll().ToList();
+            var companyList = new List<Company>();
+            try
+            {
+                companyList = _companyRepository.GetAll().ToList();
 
-            return companyList;
+                return companyList;
+            }
+            catch (Exception ex)
+            {
+                return companyList;
+            }
+          
         }
+        //Delete company from system
         public CompanyResponse DeleteCompany(int companyId)
         {
             var response = new CompanyResponse { IsOk = false };

@@ -2,38 +2,36 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using ProductManagement.Business.Models;
 using ProductManagement.Business.Models.ResponseModels;
 using ProductManagement.Business.Services;
 using ProductManagement.DAL.Dto;
 using ProductManagement.Entities.Models;
 using ProductManagement.Web.Helpers;
-using ProductManagement.Web.Models;
 
 namespace ProductManagement.Web.Controllers
 {
     [AllowAnonymous]
     public class LoginController : Controller
     {
-        private UserServices _userServices;
+        private UserService _userServices;
         private AuthHelper _authHelper = new AuthHelper();
 		private readonly SignInManager<AppUser> _signInManager;
-		private readonly UserManager<AppUser> _userManager;
         private IConfiguration _configuration;
-        public LoginController(UserServices userServices, SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IConfiguration configuration)
+        public LoginController(UserService userServices, SignInManager<AppUser> signInManager, IConfiguration configuration)
         {
             _userServices = userServices;
 			_signInManager = signInManager;
-			_userManager = userManager;
             _configuration = configuration;
 
         }
+        //Login page
         public async Task<IActionResult> Index()
         {
             await _signInManager.SignOutAsync();
             return View();
         }
 
+        //Signup method for saving user
         [HttpPost]
         public async Task<ActionResult> Signup(UserViewModelDto model)
         {
@@ -48,16 +46,20 @@ namespace ProductManagement.Web.Controllers
             }
         }
 
+        //Login to system method
         [HttpPost]
         public async Task<ActionResult> Login([FromBody] LoginViewModelDto model)
         {
             try
             {
+                //Credential check for login
                 var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, true);
                 if (result.Succeeded)
                 {
+                    //Storing user data after login
                     var user = await _userServices.GetUserByEmail(model.Email);
                     HttpContext.Session.SetString("User", JsonConvert.SerializeObject(user));
+                    //Generating jwt token for using API
                     var tokenResponse = _authHelper.CreateToken(user, _configuration);
                     HttpContext.Session.SetString("Token", tokenResponse.Token);
 

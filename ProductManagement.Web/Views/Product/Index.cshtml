@@ -315,9 +315,13 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @{
+                        var counter = 0;
+                    }
                     @if (Model.Products.Count > 0)
                     {
-                        var counter = 1;
+                        
+                        counter = 1;
                         foreach (var item in Model.Products)
                         {
                             <tr>
@@ -333,20 +337,12 @@
                             </tr>
                             counter++;
                         }
+                        counter--;
                     }
                 </tbody>
             </table>
             <div class="clearfix">
-                <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">4</a></li>
-                    <li class="page-item"><a href="#" class="page-link">5</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
+                <div class="hint-text">Showing <b>@counter</b> out of <b>@counter</b> entries</div>
             </div>
         </div>
     </div>
@@ -373,7 +369,7 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="lname">Category:</label>
-                                <select id="categorySelectc" class="form-control">
+                                <select style="height: 37px;" id="categorySelectc" class="form-control">
                                     @for (int i = 0; i < Model.Categories.Count(); i++)
                                     {
                                         if (i == 0)
@@ -433,7 +429,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <label for="lname">Category:</label>
-                                    <select id="categorySelecte" class="form-control">
+                                    <select style="height: 37px;" id="categorySelecte" class="form-control">
                                         @for (int i = 0; i < Model.Categories.Count(); i++)
                                         {
                                             if (i == 0)
@@ -550,9 +546,9 @@
 
             var productModel = {
                 name: $('#productNamec').val(),
-                code: $('productCodec').val(),
-                categoryId: $('productCodec').val(),
-                price: $('pricec').val(),
+                code: $('#productCodec').val(),
+                categoryId: $('#categorySelectc').val(),
+                priceString: $('#pricec').val(),
             };
 
             if (checkValidation(productModel)) {
@@ -573,15 +569,17 @@
                 });
 
             }
+            return;
         });
         $('body').on('click', '#btnEditProduct', function (e) {
             e.preventDefault();
             var productId = $('#editProductModal').attr('productId');
             var productModel = {
                 name: $('#productNamee').val(),
-                code: $('productCodee').val(),
-                categoryId: $('categorySelecte').val(),
-                price: $('pricee').val(),
+                code: $('#productCodee').val(),
+                categoryId: $('#categorySelecte').val(),
+                priceString: $('#pricee').val(),
+                productId : productId
             };
             if (checkValidation(productModel)) {
                 $.ajax({
@@ -609,7 +607,7 @@
             } else {
                 response = '#editResponse';
             }
-            if (model.name == '' || model.code == '' || model.categoryId == '' || model.price == '') {
+            if (model.name == '' || model.code == '' || model.categoryId == '' || model.priceString == '') {
                 $(response).text('Please fill all the fields');
                 return false;
             }

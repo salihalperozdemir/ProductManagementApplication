@@ -1,5 +1,337 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ProductManagement.Dto.Dto;
+@model OrderViewModelDto;
+
 @{
+    Layout = "_Layout";
 }
+<head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+
+        body {
+            color: #262626;
+            margin: 5% 0;
+        }
+
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        @@media (min-width: 1200px) {
+            .container {
+                max-width: 1140px;
+            }
+        }
+
+        .d-flex {
+            display: flex;
+            flex-direction: row;
+            background: #f6f6f6;
+            border-radius: 0 0 5px 5px;
+            padding: 25px;
+        }
+
+        form {
+            flex: 4;
+        }
+
+        .Yorder {
+            flex: 2;
+        }
+
+        .title {
+            background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #5195A8), color-stop(100, #70EAFF));
+            background: -moz-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: -ms-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: -o-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: linear-gradient(to bottom right, #5195A8 0%, #70EAFF 100%);
+            border-radius: 5px 5px 0 0;
+            padding: 20px;
+            color: #f6f6f6;
+        }
+
+        h2 {
+            margin: 0;
+            padding-left: 15px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        .Yorder {
+            height: 600px;
+            padding: 20px;
+        }
+
+        table {
+            margin: 0;
+            padding: 0;
+        }
+
+        th {
+            border-bottom: 1px solid #435d7d;
+            padding: 10px 0;
+        }
+
+        tr > td:nth-child(1) {
+            text-align: left;
+            color: #2d2d2a;
+        }
+
+        tr > td:nth-child(2) {
+            text-align: left;
+            color: #52ad9c;
+        }
+
+        td {
+            border-bottom: 1px solid #dadada;
+            padding: 10px 25px 10px 0;
+        }
+
+        p {
+            display: block;
+            color: #888;
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .Yorder > div {
+            padding: 15px 0;
+        }
+
+        .page-content {
+            margin-top: -49px;
+            padding-left: 250px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            background: #52ad9c;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+            button:hover {
+                cursor: pointer;
+                background: #428a7d;
+            }
+
+        .zazaza {
+        }
+    </style>
+</head>
+<body>
+    <div class="" style="padding: 0; padding-right: 40px;">
+        <div class="title">
+            <h2>Order Detail</h2>
+        </div>
+        <div class="d-flex zazaza" style="display: block !important;">
+            <div class="row">
+                <div class="col-md-4">
+                    <form action="">
+                        <div class="row">
+                            <label>
+                                <span class="fname">First Name <span class="required">*</span></span>
+                            </label>
+                            <input disabled class="form-control" type="text" id="fname" value="@Model.User.FirstName">
+                        </div>
+                        <div class="row">
+                            <label>
+                                <span class="lname">Last Name <span class="required">*</span></span>
+
+                            </label>
+                            <input disabled class="form-control" type="text" id="lname" value="@Model.User.LastName">
+                        </div>
+                        <div class="row">
+                            <label>
+                                <span>Email <span class="required">*</span></span>
+                            </label>
+                            <input disabled class="form-control" type="text" id="email" value="@Model.User.Email">
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-7">
+                    <div class="row">
+                        <label>
+                            <span>Phone <span class="required">*</span></span>
+
+                        </label>
+                        <input disabled class="form-control" id="phone" type="tel" name="tel" value="@Model.Phone">
+
+                    </div>
+                    <div class="row">
+                        <label>
+                            <span>Address <span class="required">*</span></span>
+
+                        </label>
+                        <textarea disabled class="form-control" id="address" type="text" name="address">@Model.Address</textarea>
+                    </div>
+                </div>
+                <div class="tableNew" style="display: flex;overflow-y: auto;justify-content: space-around; border: 1px solid #435d7d; border-radius: 14px;">
+                    <table style="width: 100%;">
+                        <thead style="color: #435d7d;">
+                            <tr>
+                                <th>Product Name</th>
+                                <th>Company</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th></th>
+                            </tr>
+
+                        </thead>
+                        <tbody id="productTable">
+                            @foreach(var item in Model.OrderProducts)
+                            {
+                                <tr data-id="@item.OrderProductId" data-productid="@item.ProductId">
+                                    <td>@item.Product.Name</td>
+                                    <td>@Model.Brand.Where(x => x.CompanyId == item.Product.CompanyId).FirstOrDefault()?.CompanyName</td>
+                                    <td>@Model.Categories.Where(x => x.CategoryId == item.Product.CategoryId).FirstOrDefault()?.Name</td>
+                                    <td>@item.Product.Price</td>
+                                    <td style="width:100px;">@item.Quantity</td>
+                                    @* <td><a id="deleteFromChart"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td> *@
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+               @*  <div class="row" style="display: flex;align-items:center;justify-content: space-around;margin-top: 15px;">
+                    <button id="btnSubmitOrder" data-orderid="@Model.OrderId" style="max-width:200px" type="button">Order Now</button>
+                </div> *@
+                <!-- Yorder -->
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        // $('body').on('change', '#category', function () {
+        //     $('#product').val('');
+        //     var id = $(this).val();
+        //     if (id != "" && id != null) {
+        //         $('#product option').each(function () {
+        //             if ($(this).data('categoryid') !== parseInt(id)) {
+        //                 $(this).hide();
+        //             } else {
+        //                 $(this).show();
+        //             }
+        //         });
+        //     }
+
+        // });
+        // $('body').on('change', '#company', function () {
+        //     $('#product').val('');
+        //     var id = $(this).val();
+        //     if (id != "" && id != null && id != "1") {
+        //         $('#product option').each(function () {
+        //             if ($(this).data('companyId') !== parseInt(id)) {
+        //                 $(this).hide();
+        //             } else {
+        //                 $(this).show();
+        //             }
+        //         });
+        //     }
+
+        // });
+        // $('body').on('click', '#btnAddToTable', function () {
+        //     var element = {
+        //         ProductName: $('#product option:selected').text().trim(),
+        //         ProductId: $('#product option:selected').val(),
+        //         CategoryName: $('#category option:selected').text().trim(),
+        //         CategoryId: $('#category option:selected').val(),
+        //         CompanyName: $('#company option:selected').text().trim(),
+        //         CompanyId: $('#company option:selected').val(),
+        //         Quantity: $('#quantity').val(),
+        //         Price: $('#product option:selected').data('price')
+        //     };
+        //     if (element.CategoryId != "" && element.ProductId != "" && element.CompanyId != "" && element.Quantity != "") {
+        //         var elementWithSameId = $('tr[data-productId="' + element.ProductId + '"]' + '');
+        //         if (elementWithSameId.length == 1) {
+        //             var quantityOld = $('tr[data-productId="' + element.ProductId + '"]' + '').first().find('.quantity').val();
+        //             var quantityNew = parseInt(quantityOld) + parseInt(element.Quantity);
+        //             $('tr[data-productId="' + element.ProductId + '"]' + '').first().find('.quantity').val(quantityNew);
+        //         } else {
+        //             var newRow = `<tr data-id="0" data-productId="${element.ProductId}" data-categoryId="${element.CategoryId}" data-companyId="${element.CompanyId}">
+        //                                                     <td>${element.ProductName}</td>
+        //                                                     <td>${element.CompanyName}</td>
+        //                                                     <td>${element.CategoryName}</td>
+        //                                                     <td>${element.Price}</td>
+        //                                                     <td style="width:100px;"><input class="form-control quantity" type="number" value="${element.Quantity}" /></td>
+        //                                                     <td><a class="btn deleteFromChart"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+        //                                                     </tr>`;
+
+        //             $('#productTable').append(newRow);
+        //         }
+
+        //     }
+        //     $('#product').val('');
+        //     $('#category').val('');
+        //     $('#company').val('');
+        //     $('#quantity').val('');
+
+        // });
+        // $('body').on('click', '.deleteFromChart', function () {
+        //     $(this).closest('tr').remove();
+        // })
+        // $('body').on('change', '.quantity', function () {
+        //     var value = $(this).val();
+        //     if (value != '') {
+        //         if (parseInt(value) < 1) {
+        //             $(this).closest('tr').remove();
+        //         }
+        //     }
+
+        // })
+        // $('body').on('click', '#btnSubmitOrder', function () {
+        //     var id = $(this).data('orderid');
+        //     var data = {
+        //         Phone: $('#phone').val(),
+        //         Address: $('#address').val(),
+        //         OrderId: id
+        //     };
+        //     var products = [];
+        //     var trList = $('#productTable tr');
+        //     $.each(trList, function (i, v) {
+        //         var newProduct = {
+        //             OrderProductId : $(v).data('id'),
+        //             ProductId: $(v).data('productid'),
+        //             Quantity: $(v).find('.quantity').val()
+        //         };
+        //         products.push(newProduct);
+        //         if (i == trList.length - 1) {
+        //             data.OrderProducts = products;
+        //             $.ajax({
+        //                 type: "POST",
+        //                 url: "/Order/Create",
+        //                 data: data,
+        //                 success: function (response) {
+        //                     if (response.isOk) {
+        //                         window.location.href = response.returnUrl;
+        //                     } else {
+        //                         $('#createResponse').text(response.message);
+        //                     }
+
+        //                 },
+        //                 error: function (e) {
+        //                 }
+        //             });
+        //         }
+        //     });
+
+        // })
+    </script>
+
+
+</body>

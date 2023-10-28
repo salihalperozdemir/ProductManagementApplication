@@ -7,7 +7,5 @@ namespace ProductManagement.Entities.Models
         [Key]
         public int CategoryId { get; set; }
         public string Name { get; set; }
-        public bool Valid { get; set; }
-        public List<Product> Products { get; set; }
     }
 }
